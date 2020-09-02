@@ -20,3 +20,14 @@ In order to bake image for app, there are pre-reqs for Jenkins pipeline.
 - tomcat.apache.org should be accessible.
 - Pipeline has configuration of PAT for Github repository clone.
 - Helm 2.16.9 version is chosen
+
+## Jenkins server app
+
+In order to release Jenkins on eks cluster, [jenkins-k8s](helm-charts/jenkins-k8s/Chart.yaml) chart can be released. It is required that tiller service account should have sifficient privilages to run the workload and rbac for resources across namespace.
+
+```bash 
+kubectl create sa tiller -n kube-system && kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+cd helm-charts/jenkins-k8s
+helm init --upgrade --wait --skip-refresh --service-account tiller 
+helm upgrade jenkins --namespace jenkins --install ."
+```
