@@ -1,0 +1,6 @@
+Sample app on EKS is deployed !
+
+Get the app URL
+===================
+export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "sampleapp.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo http://${SERVICE_IP}:{{ .Values.service.port }}/sample
